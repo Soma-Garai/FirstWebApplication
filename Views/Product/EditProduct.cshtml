@@ -1,0 +1,39 @@
+﻿@model FirstWebApplication.Models.Products
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit Product</h1>
+
+<div>
+    <form asp-action="EditProduct" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="product_id" />
+
+        <div class="form-group">
+            <label asp-for="product_name"></label>
+            <input asp-for="product_name" class="form-control" />
+            <span asp-validation-for="product_name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="product_description"></label>
+            <textarea asp-for="product_description" class="form-control"></textarea>
+            <span asp-validation-for="product_description" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="product_price"></label>
+            <input asp-for="product_price" class="form-control" />
+            <span asp-validation-for="product_price" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="product_image">Image</label>
+            <input asp-for="product_image " type="file" class="form-control-file" />
+            <span asp-validation-for="product_image" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
+

@@ -1,0 +1,104 @@
+﻿@model FirstWebApplication.Models.Products
+
+@{
+    ViewData["Title"] = "Add Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Include necessary CSS files -->
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="~/css/bootstrap.css" />
+    <!-- slick slider stylesheet -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick-theme.min.css" />
+    <!-- fonts style -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700&display=swap" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="~/css/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="~/css/responsive.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <div class="main_body_content">
+
+        <!-- Add Product Form -->
+        <section class="add_product_section layout_padding">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="form_container">
+                            <div class="heading_container">
+                                <h2>Add New Product</h2>
+                            </div>
+                            <form asp-action="AddProduct" asp-controller="Product" method="post" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label asp-for="product_name">Product Name</label>
+                                    <input asp-for="product_name" class="form-control" />
+                                    <span asp-validation-for="product_name" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="product_description">Description</label>
+                                    <textarea asp-for="product_description" class="form-control" rows="4"></textarea>
+                                    <span asp-validation-for="product_description" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="product_price">Price</label>
+                                    <input asp-for="product_price" class="form-control" />
+                                    <span asp-validation-for="product_price" class="text-danger"></span>
+                                </div>
+                                @* <div class="form-group">
+                                    <label asp-for="product_image">Image</label>
+                                    <input asp-for="product_image " type="file" class="form-control-file" />
+                                    <span asp-validation-for="product_image" class="text-danger"></span>
+                                </div> *@
+                                <div class="form-group">
+                                    <label asp-for="product_image" class="control-label"></label>
+                                    <div class="custom-file">
+                                        <input asp-for="product_image " class="custom-file-input" id="customFile"/>
+                                        <label class="custom custom-file-label" for="customFile">Select file</label>
+                                    </div>
+                                    <span asp-validation-for="product_image" class="text-danger"></span>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-brown">Add Product</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End Add Product Form -->
+
+    </div>
+
+    <!-- Include necessary script files -->
+    <!-- jQuery -->
+    <script src="~/js/jquery-3.4.1.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="~/js/bootstrap.js"></script>
+    <!-- Slick Slider -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick.min.js"></script>
+    <!-- Custom JS -->
+    <script src="~/js/custom.js"></script>
+    <!-- Custom Styles -->
+    <style>
+        .btn-brown {
+            background-color: #8B4513; /* Brown color */
+            border-color: #8B4513; /* Brown color for border */
+        }
+
+            .btn-brown:hover {
+                background-color: #654321; /* Darker brown on hover */
+                border-color: #654321; /* Darker brown for border on hover */
+            }
+    </style>
+</body>
+
+</html>
+
