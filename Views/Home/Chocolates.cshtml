@@ -1,6 +1,8 @@
-﻿@{
+@model List<FirstWebApplication.Models.Products>
+@{
     ViewData["Title"] = "Chocolates";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    
 }
 
 <!DOCTYPE html>
@@ -41,8 +43,15 @@
 
     <div class="main_body_content">
 
-        
-
+        <!-- Add Product Button -->
+        <div class="container">
+            <div class="row justify-content-end mt-3">
+                <div class="col-auto">
+                    <a href="@Url.Action("AddProduct", "Product")" class="btn btn-primary btn-brown">Add Product</a>
+                </div>
+            </div>
+        </div>
+        <!-- End Add Product Button -->
         <!-- chocolate section -->
         <section class="chocolate_section layout_padding">
             <div class="container">
@@ -57,102 +66,39 @@
             </div>
             <div class="container">
                 <div class="chocolate_container">
-                    <div class="box">
-                        <div class="img-box">
-                            <img src="~/images/chocolate1.png" alt="">
+
+                    <!-- Loop through products and display -->
+                    @foreach (var product in ViewBag.Products)
+                    {
+                        @* var photoPath = "~/images/" + (product.product_ImagePath ?? "no img.jpg"); *@
+                        <div class="box">
+                            <div class="img-box">
+                                @* <img src="@product.product_ImagePath" alt="@product.product_name"> *@
+                                @* <img src="~/images/@product.product_image" alt="product image"> *@
+                                <img src="@product.product_ImagePath" alt="product image" asp-append-version="true">
+                                @* <img src="@photoPath" alt="@product.product_name" asp-append-version="true"> *@
+                            </div>
+                            <div class="detail-box">
+                                <h6>
+                                    @product.product_name
+                                </h6>
+                                <h5>
+                                    Rs.@product.product_price
+                                </h5>
+                                @* <a href="">
+                                    BUY NOW
+                                </a> *@
+                                <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                                    <input type="hidden" name="product_id" value="@product.product_id" />
+                                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                                </form>
+                                <div class="btn-group" role="group" aria-label="Product Actions">
+                                    <a href="@Url.Action("EditProduct", "Product", new { id = product.product_id })" class="btn btn-sm btn-primary">Edit</a>
+                                    <a href="@Url.Action("DeleteProduct", "Product", new { id = product.product_id })" class="btn btn-sm btn-danger">Delete</a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="detail-box">
-                            <h6>
-                                Yummy <span>chocolate</span>
-                            </h6>
-                            <h5>
-                                $5.0
-                            </h5>
-                            <a href="">
-                                BUY NOW
-                            </a>
-                        </div>
-                    </div>
-                    <div class="box">
-                        <div class="img-box">
-                            <img src="~/images/chocolate2.png" alt="">
-                        </div>
-                        <div class="detail-box">
-                            <h6>
-                                Yummy <span>chocolate</span>
-                            </h6>
-                            <h5>
-                                $5.0
-                            </h5>
-                            <a href="">
-                                BUY NOW
-                            </a>
-                        </div>
-                    </div>
-                    <div class="box">
-                        <div class="img-box">
-                            <img src="~/images/chocolate3.png" alt="">
-                        </div>
-                        <div class="detail-box">
-                            <h6>
-                                Yummy <span>chocolate</span>
-                            </h6>
-                            <h5>
-                                $5.0
-                            </h5>
-                            <a href="">
-                                BUY NOW
-                            </a>
-                        </div>
-                    </div>
-                    <div class="box">
-                        <div class="img-box">
-                            <img src="~/images/chocolate1.png" alt="">
-                        </div>
-                        <div class="detail-box">
-                            <h6>
-                                Yummy <span>chocolate</span>
-                            </h6>
-                            <h5>
-                                $5.0
-                            </h5>
-                            <a href="">
-                                BUY NOW
-                            </a>
-                        </div>
-                    </div>
-                    <div class="box">
-                        <div class="img-box">
-                            <img src="~/images/chocolate2.png" alt="">
-                        </div>
-                        <div class="detail-box">
-                            <h6>
-                                Yummy <span>chocolate</span>
-                            </h6>
-                            <h5>
-                                $5.0
-                            </h5>
-                            <a href="">
-                                BUY NOW
-                            </a>
-                        </div>
-                    </div>
-                    <div class="box">
-                        <div class="img-box">
-                            <img src="~/images/chocolate3.png" alt="">
-                        </div>
-                        <div class="detail-box">
-                            <h6>
-                                Yummy <span>chocolate</span>
-                            </h6>
-                            <h5>
-                                $5.0
-                            </h5>
-                            <a href="">
-                                BUY NOW
-                            </a>
-                        </div>
-                    </div>
+                    }
                 </div>
             </div>
         </section>
@@ -173,13 +119,13 @@
                     </div>
                     <div class="col-md-4 col-lg-3">
                         <div class="social_box">
-                            <a href="">
+                            <a href="#">
                                 <i class="fa fa-facebook" aria-hidden="true"></i>
                             </a>
-                            <a href="">
+                            <a href="#">
                                 <i class="fa fa-twitter" aria-hidden="true"></i>
                             </a>
-                            <a href="">
+                            <a href="#">
                                 <i class="fa fa-linkedin" aria-hidden="true"></i>
                             </a>
                         </div>
@@ -248,19 +194,19 @@
                             Contact Us
                         </h4>
                         <div class="info_contact">
-                            <a href="">
+                            <a href="#">
                                 <i class="fa fa-map-marker" aria-hidden="true"></i>
                                 <span>
                                     Location
                                 </span>
                             </a>
-                            <a href="">
+                            <a href="#">
                                 <i class="fa fa-phone" aria-hidden="true"></i>
                                 <span>
                                     Call +01 1234567890
                                 </span>
                             </a>
-                            <a href="">
+                            <a href="#">
                                 <i class="fa fa-envelope"></i>
                                 <span>
                                     demo@gmail.com
@@ -275,18 +221,7 @@
 
     </div>
 
-    <!-- footer section -->
-    <footer class="container-fluid footer_section">
-        <div class="container">
-            <div class="col-md-11 col-lg-8 mx-auto">
-                <p>
-                    &copy; <span id="displayYear"></span> All Rights Reserved By
-                    <a href="https://html.design/">Free Html Templates</a>
-                </p>
-            </div>
-        </div>
-    </footer>
-    <!-- footer section -->
+ 
     <!-- jQuery -->
     <script src="~/js/jquery-3.4.1.min.js"></script>
     <!-- bootstrap js -->
@@ -295,7 +230,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick.min.js"></script>
     <!-- custom js -->
     <script src="~/js/custom.js"></script>
+    <!-- Custom Styles -->
+    <style>
+        .btn-brown {
+            background-color: #8B4513; /* Brown color */
+            border-color: #8B4513; /* Brown color for border */
+        }
 
+            .btn-brown:hover {
+                background-color: #654321; /* Darker brown on hover */
+                border-color: #654321; /* Darker brown for border on hover */
+            }
+    </style>
 </body>
 
 </html>
