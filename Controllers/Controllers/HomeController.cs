@@ -26,23 +26,31 @@ namespace FirstWebApplication.Controllers
         {
             return View();
         }
-        public IActionResult Chocolates()
+        
+        public IActionResult Chocolates(int? categoryId)
+{
+    // Retrieve products from the database along with categories
+    var productsWithCategories = _appDbContext.tblProducts
+        .Include(p => p.category) // Include category information
+        .Select(p => new ProductWithCategoryViewModel
         {
-            // Retrieve products from the database
-            List<ProductViewModel> allProducts = _appDbContext.tblProducts.ToList();
-
-            // Map ProductViewModel to Products
-            var products = allProducts.Select(p => new Products
-            {
-                product_id = p.product_id,
-                product_name = p.product_name,
-                product_description = p.product_description,
-                product_price = p.product_price,
-                product_ImagePath = p.product_ImagePath
-            }).ToList();
-            ViewBag.Products = products;
-            return View();
-        }
+            product_id = p.product_id,
+            product_name = p.product_name,
+            product_description = p.product_description,
+            product_price = p.product_price,
+            product_ImagePath = p.product_ImagePath,
+            CategoryId = p.CategoryId,
+            CategoryName = p.category.CategoryName // Assuming there's a property for CategoryName in Category entity
+        })
+        .ToList();
+    // Filter products based on categoryId if provided
+    if (categoryId.HasValue)
+    {
+        productsWithCategories = productsWithCategories.Where(p => p.CategoryId == categoryId.Value).ToList();
+    }
+    ViewBag.ProductsWithCategories = productsWithCategories;
+    return View();
+}
 
 
         public IActionResult Testimonial()
