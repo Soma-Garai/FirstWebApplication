@@ -24,43 +24,45 @@ namespace FirstWebApplication.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProduct(Products products)
+public async Task<IActionResult> AddProduct(Products products)
+{
+    if (ModelState.IsValid)
+    {
+        string serverFolder = "";
+
+        if (products.product_image != null)
         {
-            if (ModelState.IsValid)
-            {
-                string serverFolder = "";
+            string folder = "images/";
+            folder += Guid.NewGuid().ToString() + products.product_image.FileName;
+            products.product_ImagePath = "/" + folder;
+            serverFolder = Path.Combine(_hostEnvironment.WebRootPath, folder);
 
-                if (products.product_image != null)
-                {
-                    string folder = "images/";
-                    folder += Guid.NewGuid().ToString() + products.product_image.FileName;
-                    products.product_ImagePath = "/"+folder;
-                    serverFolder = Path.Combine(_hostEnvironment.WebRootPath, folder);
-
-                    await products.product_image.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
-                }
-
-                // Create a new Products object with the data from the view model
-                ProductViewModel model = new ProductViewModel
-                {
-                    product_name = products.product_name,
-                    product_description = products.product_description,
-                    product_price = products.product_price,
-                    product_ImagePath = products.product_ImagePath
-                };
-
-                // Add the new product to the database
-                _context.tblProducts.Add(model);
-                await _context.SaveChangesAsync();
-
-                // Redirect to the Chocolate action with the newly created product's ID
-                return RedirectToAction("Chocolates", "Home");
-            }
-
-            // If ModelState is not valid, return to the view with errors
-            return View(products);
+            await products.product_image.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
         }
+        ProductViewModel model = new ProductViewModel
+        {
+            product_name = products.product_name,
+            product_description = products.product_description,
+            product_price = products.product_price,
+            product_ImagePath = products.product_ImagePath,
+            //category = _context.tblCategories.Find(products.CategoryId)
+            CategoryId = products.CategoryId
+        };
+        // Update the product with the selected category
+        //products.category = _context.tblCategories.Find(products.CategoryId);
 
+        // Add the new product to the database
+        _context.tblProducts.Add(model);
+        await _context.SaveChangesAsync();
+
+        // Redirect to the Chocolate action with the newly created product's ID
+        return RedirectToAction("Chocolates", "Home");
+    }
+
+    // If ModelState is not valid, return to the view with errors
+    ViewBag.Categories = _context.tblCategories.ToList(); // Retrieve all categories for dropdown
+    return View(products);
+}
 
 
         [HttpGet]
