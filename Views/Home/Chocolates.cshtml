@@ -52,6 +52,22 @@
             </div>
         </div>
         <!-- End Add Product Button -->
+        <!-- Category Filter -->
+        <div class="container mt-3">
+            <div class="row">
+                <div class="col">
+                    <ul class="list-inline">
+                        <li class="list-inline-item"><a href="@Url.Action("Chocolates", "Home")">All</a></li>
+                        @foreach (var category in ViewBag.ProductsWithCategories)
+                        {
+                            <li class="list-inline-item"><a href="@Url.Action("Chocolates", "Home", new { categoryId = category.CategoryId })">@category.CategoryName</a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- End Category Filter -->
+
         <!-- chocolate section -->
         <section class="chocolate_section layout_padding">
             <div class="container">
@@ -60,7 +76,7 @@
                         Our chocolate products
                     </h2>
                     <p>
-                        Many desktop publishing packages and web pagend web page editors now use Lorem Ipsum as their
+                        Are you ready to experience pure bliss in every bite? Look no further than our exquisite range of chocolates, crafted with passion and perfection to elevate your chocolate moments to new heights!
                     </p>
                 </div>
             </div>
@@ -68,7 +84,7 @@
                 <div class="chocolate_container">
 
                     <!-- Loop through products and display -->
-                    @foreach (var product in ViewBag.Products)
+                    @foreach (var product in ViewBag.ProductsWithCategories)
                     {
                         @* var photoPath = "~/images/" + (product.product_ImagePath ?? "no img.jpg"); *@
                         <div class="box">
