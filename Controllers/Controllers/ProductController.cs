@@ -18,10 +18,11 @@ namespace FirstWebApplication.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddProduct()
-        {
-            return View();
-        }
+public IActionResult AddProduct()
+{
+    ViewBag.Categories = _context.tblCategories.ToList(); // Retrieve all categories for dropdown
+    return View();
+}
 
         [HttpPost]
 public async Task<IActionResult> AddProduct(Products products)
