@@ -1,0 +1,37 @@
+﻿@model FirstWebApplication.Models.Cart
+
+<h2>Your Cart</h2>
+
+@if (Model.Items.Count == 0)
+{
+    <p>Your cart is empty</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.Product.product_name</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Product.product_price</td>
+                    <td>@(item.Quantity * item.Product.product_price)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <!-- Checkout Button -->
+    <form method="post" action="@Url.Action("AddOrder", "Orders")">
+        <button type="submit" class="btn btn-primary">Checkout</button>
+    </form>
+}
+
