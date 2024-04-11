@@ -1,57 +1,55 @@
-﻿using FirstWebApplication.Models;
+using FirstWebApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using FirstWebApplication.ViewModels;
 
 namespace FirstWebApplication.Controllers
 {
     public class UserController : Controller
     {
+        private readonly SignInManager<UserModel> _signInManager;
         private readonly UserManager<UserModel> _userManager;
         private readonly AppDbContext _appDbContext;
 
-        public UserController(UserManager<UserModel> userManager, AppDbContext appDbContext)
+        public UserController(SignInManager<UserModel> signInManager, UserManager<UserModel> userManager, AppDbContext appDbContext)
         {
+            _signInManager = signInManager;
             _userManager = userManager;
             _appDbContext = appDbContext;
-        } 
+        }
 
         [HttpGet]
-        public IActionResult SignUp()
-        { 
-            return View(); 
+        public IActionResult Register()
+        {
+            return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> SignUp(UserModel registeruser)
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var user = new UserModel
                 {
-                    UserName = registeruser.UserName,
-                    Email = registeruser.Email
+                    UserName = model.Email,
+                    Email = model.Email
                 };
 
-                var result = await _userManager.CreateAsync(user,registeruser.Password);
-
+                var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    _appDbContext.Users.Add(user);
-                    await _appDbContext.SaveChangesAsync();
-                    
-                    return RedirectToAction("Index","Home");
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return RedirectToAction("Index", "Home");
                 }
 
-                // If registration failed, add errors to ModelState
                 foreach (var error in result.Errors)
                 {
-                    ModelState.AddModelError("", error.Description);
+                    ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
 
-            // If ModelState is invalid or registration failed, redisplay the registration form with errors
-            return View(registeruser);
+            return View(model);
         }
 
         [HttpGet]
@@ -59,12 +57,32 @@ namespace FirstWebApplication.Controllers
         {
             return View();
         }
-        
-        [HttpPost]
-        public IActionResult Login(UserModel user)
-        {
-            return RedirectToAction("Index", "Home");
 
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        {
+            returnUrl ??= Url.Content("~/Home/Index");
+
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    return LocalRedirect(returnUrl);
+                }
+
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            }
+
+            return View(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+
     }
 }
