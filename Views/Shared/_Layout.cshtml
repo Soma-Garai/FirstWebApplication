@@ -77,9 +77,9 @@
                                 </div>
 
                             </li>
-                            <li class="nav-item">
+                            @* <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Testimonial">Testimonial</a>
-                            </li>
+                            </li> *@
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="ContactUs">Contact Us</a>
                             </li>
@@ -87,12 +87,13 @@
                         <ul class="navbar-nav">
                             @if (User.Identity.IsAuthenticated)
                             {
+                                <span class="welcome-section">Welcome, @User.Identity.Name!</span>
                                 <li class="nav-item">
                                     @* <a class="nav-link" href="~/User/Logout">Logout</a> *@
                                     <form id="logoutForm" asp-controller="User" asp-action="Logout" method="post" class="nav-link">
                                         @Html.AntiForgeryToken()
 
-                                        <button type="submit" class="nav-link btn btn-link">Logout</button>
+                                        <button type="submit" class="nav-link btn btn-link logout-btn">Logout</button>
                                     </form>
                                 </li>
                             }
@@ -151,57 +152,29 @@
     <!-- Google Map -->
     <!-- Include Google Maps script if needed -->
     <!-- End Google Map -->
-     
+    <style>
+    /* Style for the "Welcome, [UserName]" section */
+    .welcome-section {
+            margin-top:17px;
+            margin-right: 15px; /* Adjust as needed */
+    font-weight: bold;
+    color: #333; /* Text color */
+    }
+
+    /* Style for the Logout button */
+    .logout-btn {
+    background-color: transparent;
+    color: #333; /* Text color */
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    }
+
+    .logout-btn:hover {
+    text-decoration: underline;
+    }
+    </style>
     
 
 </body>
-
 </html>
-
-
-
-
-
-@* <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">FirstWebApplication</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Home">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header> 
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - FirstWebApplication - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/bootstrap.js"></script>
-    <script src="~/js/custom.js"></script>
-    <script src="~/js/jquery-3.4.1.min.js"></script>
-    <script src="~/js/slick.min.js"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-</body> *@
