@@ -3,16 +3,22 @@ using Microsoft.EntityFrameworkCore;
 
 using FirstWebApplication.Models;
 using Microsoft.Extensions.DependencyInjection;
+using FirstWebApplication.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("FirstWebApplicationDbContextConnection") ?? throw new InvalidOperationException("Connection string 'FirstWebApplicationDbContextConnection' not found.");
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
-//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<FirstWebApplicationDbContext>();
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<UserModel, IdentityRole>()
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultUI()
             .AddDefaultTokenProviders();
+
+builder.Services.AddScoped<UserManager<UserModel>>();
+builder.Services.AddScoped<SignInManager<UserModel>>();
+builder.Services.AddScoped<Products>();
+builder.Services.AddScoped<Category>();
+
 builder.Services.Configure<IdentityOptions>(options =>
 {
     // Password settings
@@ -41,11 +47,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/User/AccessDenied"; // Customize your access denied path
     options.SlidingExpiration = true;
 });
-builder.Services.AddScoped<UserManager<IdentityUser>>();
-builder.Services.AddScoped<SignInManager<IdentityUser>>();
-builder.Services.AddScoped<Products>();
-//builder.Services.AddScoped<Cart>();
-builder.Services.AddScoped<Category>();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -76,7 +78,6 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseSession(); // Use session middleware
 app.UseAuthorization();
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
