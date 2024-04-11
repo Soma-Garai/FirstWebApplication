@@ -1,5 +1,7 @@
 @using Microsoft.EntityFrameworkCore
 @inject AppDbContext _appDbContext
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<UserModel> SignInManager
 
 
 
@@ -59,7 +61,7 @@
                                 </a>
                                 @* <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Chocolates
-                                </a *@>                                   
+                                </a *@                                  
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     @if (ViewBag.Categories != null)
                                     {
@@ -82,14 +84,41 @@
                                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="ContactUs">Contact Us</a>
                             </li>
                         </ul>
-                        <div class="quote_btn-container">
+                        <ul class="navbar-nav">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item">
+                                    @* <a class="nav-link" href="~/User/Logout">Logout</a> *@
+                                    <form id="logoutForm" asp-controller="User" asp-action="Logout" method="post" class="nav-link">
+                                        @Html.AntiForgeryToken()
+
+                                        <button type="submit" class="nav-link btn btn-link">Logout</button>
+                                    </form>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="~/User/Register">Register</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="~/User/Login">Login</a>
+                                </li>
+                            }
+                            <li class="nav-item">
+                                <a href="~/Cart/ViewCart" class="nav-link">
+                                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        @* <div class="quote_btn-container">
                             <a href="~/Cart/ViewCart">
                                 <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                             </a>
                             <a href="~/User/Register">
                                 <i class="fa fa-user" aria-hidden="true"></i>
                             </a>
-                        </div>
+                        </div> *@
                     </div>
                 </nav>
             </div>
@@ -109,7 +138,7 @@
             </div>
         </div>
     </footer>    
-    }
+    
     <!-- footer section -->
     <!-- jQery -->
     <script src="~/js/jquery-3.4.1.min.js"></script>
@@ -123,7 +152,7 @@
     <!-- Include Google Maps script if needed -->
     <!-- End Google Map -->
      
-    }
+    
 
 </body>
 
