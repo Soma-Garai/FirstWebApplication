@@ -1,5 +1,43 @@
-﻿@model FirstWebApplication.Models.Cart
+@model FirstWebApplication.Models.Cart
+@{
+    ViewData["Title"] = "Cart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>ChocoLux</title>
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="~/css/bootstrap.css" />
+    <!-- slick slider stylesheet -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick-theme.min.css" />
+    <!-- fonts style -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700&display=swap" rel="stylesheet" />
+    <!-- slick slider -->
+    <link rel="stylesheet" href="~/css/slick-theme.css" />
+    <!-- font awesome style -->
+    <link href="~/css/font-awesome.min.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="~/css/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="~/css/responsive.css" rel="stylesheet" />
+
+</head>
+<body>
 <h2>Your Cart</h2>
 
 @if (Model.Items.Count == 0)
@@ -30,8 +68,31 @@ else
         </tbody>
     </table>
     <!-- Checkout Button -->
-    <form method="post" action="@Url.Action("AddOrder", "Orders")">
-        <button type="submit" class="btn btn-primary">Checkout</button>
-    </form>
+        <form method="post" action="@Url.Action("Checkout", "Orders")">
+
+            <button type="submit" class="btn btn-primary btn-brown">Checkout</button>
+        </form>
 }
+    <!-- jQuery -->
+    <script src="~/js/jquery-3.4.1.min.js"></script>
+    <!-- bootstrap js -->
+    <script src="~/js/bootstrap.js"></script>
+    <!-- slick slider -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick.min.js"></script>
+    <!-- custom js -->
+    <script src="~/js/custom.js"></script>
+    <!-- Custom Styles -->
+    <style>
+        .btn-brown {
+            background-color: #8B4513; /* Brown color */
+            border-color: #8B4513; /* Brown color for border */
+        }
+
+            .btn-brown:hover {
+                background-color: #654321; /* Darker brown on hover */
+                border-color: #654321; /* Darker brown for border on hover */
+            }
+    </style>
+</body>
+</html>
 
