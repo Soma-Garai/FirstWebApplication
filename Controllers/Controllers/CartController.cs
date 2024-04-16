@@ -21,7 +21,7 @@ namespace FirstWebApplication.Controllers
 
         public IActionResult AddToCart(int productId, int quantity)
         {
-                       // Find the product in the database
+            // Find the product in the database
             var product = _context.tblProducts.Find(productId);
             if (product == null)
             {
@@ -45,6 +45,45 @@ namespace FirstWebApplication.Controllers
             var cart = HttpContext.Session.Get<Cart>("Cart") ?? new Cart();
 
             return View(cart);
+        }
+
+        public IActionResult UpdateCart(int productId, int quantity)
+        {
+            var product = _context.tblProducts.Find(productId);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            var cart = HttpContext.Session.Get<Cart>("Cart") ?? new Cart();
+            cart.UpdateQuantity(product, quantity);
+
+            HttpContext.Session.Set("Cart", cart);
+
+            return RedirectToAction("ViewCart");
+        }
+
+        [HttpPost]
+        public IActionResult RemoveFromCart(int productId)
+        {
+            var product = _context.tblProducts.Find(productId);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            var cart = HttpContext.Session.Get<Cart>("Cart") ?? new Cart();
+            cart.RemoveItem(product);
+
+            HttpContext.Session.Set("Cart", cart);
+
+            return RedirectToAction("ViewCart");
+        }
+
+        public IActionResult ClearCart()
+        {
+            HttpContext.Session.Remove("Cart");
+            return RedirectToAction("ViewCart");
         }
 
     }
