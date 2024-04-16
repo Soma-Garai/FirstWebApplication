@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using FirstWebApplication.ViewModels;
+using System.Net.Mail;
 
 namespace FirstWebApplication.Controllers
 {
@@ -30,10 +31,14 @@ namespace FirstWebApplication.Controllers
         {
             if (ModelState.IsValid)
             {
+                MailAddress address = new MailAddress(model.Email);
+                string userName = address.User;
                 var user = new UserModel
                 {
-                    UserName = model.Email,
-                    Email = model.Email
+                    UserName = userName,
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
@@ -57,6 +62,18 @@ namespace FirstWebApplication.Controllers
         {
             return View();
         }
+        public bool IsValidEmail(string emailaddress)
+        {
+            try
+            {
+                MailAddress m = new MailAddress(emailaddress);
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+        }
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
@@ -65,7 +82,16 @@ namespace FirstWebApplication.Controllers
 
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                var userName = model.Email;
+                if (IsValidEmail(model.Email))  //if user has entered email to login,store it as 'username' and if direct username is entered then that will be stored in result.
+                {
+                    var user = await _userManager.FindByEmailAsync(model.Email);
+                    if (user != null)
+                    {
+                        userName = user.UserName;
+                    }
+                }
+                var result = await _signInManager.PasswordSignInAsync(userName, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     return LocalRedirect(returnUrl);
