@@ -1,38 +1,98 @@
-﻿@{
+@model FirstWebApplication.ViewModels.LoginViewModel
+@{
     ViewData["Title"] = "User Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">User Login</div>
+<!DOCTYPE html>
+<html>
 
-                <div class="card-body">
-                    <form method="post" action="/User/Login">
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" required autofocus>
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>ChocoLux</title>
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="~/css/bootstrap.css" />
+    <!-- slick slider stylesheet -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick-theme.min.css" />
+    <!-- fonts style -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700&display=swap" rel="stylesheet" />
+    <!-- slick slider -->
+    <link rel="stylesheet" href="~/css/slick-theme.css" />
+    <!-- font awesome style -->
+    <link href="~/css/font-awesome.min.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="~/css/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="~/css/responsive.css" rel="stylesheet" />
+</head>
+
+<body class="sub_page">
+    <!-- Main content for user sign up -->
+    <div class="main_body_content">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">User Login</div>
+
+                        <div class="card-body">
+                            <form method="post" action="/User/Login">
+                                <div class="form-group">
+                                    <label for="Email / Username">Email / Username</label>
+                                    <input type="text" class="form-control" id="email" name="email" required autofocus>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input type="password" class="form-control" id="password" name="password" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="remember" name="remember">
+                                        <label class="custom-control-label" for="remember">Remember Me</label>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-brown">Login</button>
+                            </form>
                         </div>
-
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="remember" name="remember">
-                                <label class="custom-control-label" for="remember">Remember Me</label>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Login</button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
+
+        <!-- Scripts -->
+        <script src="~/js/jquery-3.4.1.min.js"></script>
+        <script src="~/js/bootstrap.js"></script>
+        <!-- slick slider -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick.min.js"></script>
+        <!-- custom js -->
+        <script src="~/js/custom.js"></script>
+        <!-- Any additional scripts -->
+        <style>
+            .btn-brown {
+                background-color: #8B4513; /* Brown color */
+                border-color: #8B4513; /* Brown color for border */
+            }
+
+                .btn-brown:hover {
+                    background-color: #654321; /* Darker brown on hover */
+                    border-color: #654321; /* Darker brown for border on hover */
+                }
+        </style>
+</body>
+</html>
