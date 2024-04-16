@@ -26,28 +26,28 @@ namespace FirstWebApplication.Models
             }
         }
 
-        public void UpdateQuantity(Product product, int quantity)
+        public void UpdateQuantity(ProductViewModel product, int quantity)
         {
-            var existingItem = Items.FirstOrDefault(item => item.ProductId == product.product_id);
+            var existingItem = Items.FirstOrDefault(item => item.Product.product_id == product.product_id);
             if (existingItem != null)
             {
                 existingItem.Quantity = quantity;
             }
         }
 
-        //public void RemoveItem(Product product)
-        //{
-        //    var itemToRemove = Items.FirstOrDefault(item => item.ProductId == product.product_id);
-        //    if (itemToRemove != null)
-        //    {
-        //        Items.Remove(itemToRemove);
-        //    }
-        //}
+        public void RemoveItem(ProductViewModel product)
+        {
+            var itemToRemove = Items.FirstOrDefault(item => item.Product.product_id == product.product_id);
+            if (itemToRemove != null)
+            {
+                Items.Remove(itemToRemove);
+            }
+        }
 
-        //public void Clear()
-        //{
-        //    Items.Clear();
-        //}
+        public void Clear()
+        {
+            Items.Clear();
+        }
     }
 
 }
