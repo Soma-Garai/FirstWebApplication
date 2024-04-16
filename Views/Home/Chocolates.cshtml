@@ -53,7 +53,7 @@
         </div>
         <!-- End Add Product Button -->
         <!-- Category Filter -->
-        <div class="container mt-3">
+        @* <div class="container mt-3">
             <div class="row">
                 <div class="col">
                     <ul class="list-inline">
@@ -65,7 +65,7 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        </div> *@
         <!-- End Category Filter -->
 
         <!-- chocolate section -->
@@ -105,9 +105,14 @@
                                     BUY NOW
                                 </a> *@
                                 <form asp-controller="Cart" asp-action="AddToCart" method="post">
-                                    <input type="hidden" name="product_id" value="@product.product_id" />
+                                    <input type="hidden" name="productId" value="@product.product_id" />
+                                    <input type="number" name="quantity" value="1" min="1" />
                                     <button type="submit" class="btn btn-primary">Add to Cart</button>
                                 </form>
+                                @* <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                                    <input type="hidden" name="product_id" value="@product.product_id" />
+                                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                                </form> *@
                                 <div class="btn-group" role="group" aria-label="Product Actions">
                                     <a href="@Url.Action("EditProduct", "Product", new { id = product.product_id })" class="btn btn-sm btn-primary">Edit</a>
                                     <a href="@Url.Action("DeleteProduct", "Product", new { id = product.product_id })" class="btn btn-sm btn-danger">Delete</a>
