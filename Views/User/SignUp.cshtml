@@ -1,6 +1,6 @@
-﻿@model FirstWebApplication.Models.UserModel
+@model FirstWebApplication.ViewModels.RegisterViewModel
 @{
-    ViewData["Title"] = "SignUp";
+    ViewData["Title"] = "Register";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -45,27 +45,41 @@
                 <div class="col-md-5 col-lg-4 offset-md-1 offset-lg-2">
                     <div class="heading_container">
                         <h2>
-                            User SignUp
+                            User Register
                         </h2>
                     </div>
-                    <form asp-controller="User" asp-action="SignUp" method="post">
+                    <form asp-action="Register" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group">
-                            @* <label asp-for="UserName"></label> *@
-                            <input asp-for="UserName" class="form-control" placeholder="Enter your full name" />
-                        </div>
-                        <div class="form-group">
-                            @* <label asp-for="Email"></label> *@
-                            <input asp-for="Email" class="form-control" placeholder="Enter email" />
+                            <label asp-for="FirstName"></label>
+                            <input asp-for="FirstName" class="form-control" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            @* <label asp-for="Password"></label> *@
-                            <input asp-for="Password" type="password" class="form-control" placeholder="Password" />
+                            <label asp-for="LastName"></label>
+                            <input asp-for="LastName" class="form-control" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
                         </div>
-                        <div class="d-flex">
-                            <button type="submit" class="btn btn-primary">
-                                Sign Up
-                            </button>
+
+                        <div class="form-group">
+                            <label asp-for="Email"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
+
+                        <div class="form-group">
+                            <label asp-for="Password"></label>
+                            <input asp-for="Password" class="form-control" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="ConfirmPassword"></label>
+                            <input asp-for="ConfirmPassword" class="form-control" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-brown">Register</button>
                     </form>
                 </div>
             </div>
@@ -80,5 +94,17 @@
     <!-- custom js -->
     <script src="~/js/custom.js"></script>
     <!-- Any additional scripts -->
+    <style>
+        .btn-brown {
+            background-color: #8B4513; /* Brown color */
+            border-color: #8B4513; /* Brown color for border */
+        }
+
+            .btn-brown:hover {
+                background-color: #654321; /* Darker brown on hover */
+                border-color: #654321; /* Darker brown for border on hover */
+            }
+    </style>
 </body>
 </html>
+
