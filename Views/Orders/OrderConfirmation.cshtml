@@ -1,0 +1,116 @@
+﻿@model FirstWebApplication.Models.Orders
+@{
+    ViewData["Title"] = "OrderConfirmation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>ChocoLux</title>
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="~/css/bootstrap.css" />
+    <!-- slick slider stylesheet -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick-theme.min.css" />
+    <!-- fonts style -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700&display=swap" rel="stylesheet" />
+    <!-- slick slider -->
+    <link rel="stylesheet" href="~/css/slick-theme.css" />
+    <!-- font awesome style -->
+    <link href="~/css/font-awesome.min.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="~/css/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="~/css/responsive.css" rel="stylesheet" />
+
+</head>
+<body>
+    <h2>Order Confirmation</h2>
+
+    <div>
+        <p>Thank you for your order! Your order details:</p>
+
+        <p>Order ID: @Model.OrderId</p>
+        <p>Order Date: @Model.OrderDate.ToString("yyyy-MM-dd HH:mm:ss")</p>
+        <p>Status: @Model.Status</p>
+
+        <h3>Order Items:</h3>
+        @if (Model.OrderDetails != null && Model.OrderDetails.Any())
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
+                        <th>Total Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var orderDetail in Model.OrderDetails)
+                    {
+                        <tr>
+                            <td>@orderDetail.ProductName</td>
+                            <td>@orderDetail.Quantity</td>
+                            <td>@orderDetail.product_price</td>
+                            <td>@orderDetail.TotalPrice</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No items in this order.</p>
+        }
+
+        <p><strong>Total Price:</strong> @Model.TotalPrice</p>
+        @* <ul>
+        @foreach (var orderDetail in Model.OrderDetails)
+        {
+        <li>
+        @orderDetail.ProductName - Quantity: @orderDetail.Quantity - Price: $@orderDetail.product_price
+        </li>
+        }
+        </ul> *@
+        <form method="get" action="@Url.Action("Index", "Home")">
+
+            <button type="submit" class="btn btn-primary btn-brown">Keep Shopping</button>
+        </form>
+    </div>
+
+    <!-- Scripts -->
+    <script src="~/js/jquery-3.4.1.min.js"></script>
+    <script src="~/js/bootstrap.js"></script>
+    <!-- slick slider -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick.min.js"></script>
+    <!-- custom js -->
+    <script src="~/js/custom.js"></script>
+    <!-- Any additional scripts -->
+    <style>
+        .btn-brown {
+            background-color: #8B4513; /* Brown color */
+            border-color: #8B4513; /* Brown color for border */
+        }
+
+            .btn-brown:hover {
+                background-color: #654321; /* Darker brown on hover */
+                border-color: #654321; /* Darker brown for border on hover */
+            }
+    </style>
+</body>
+</html>
