@@ -1,4 +1,4 @@
-﻿using FirstWebApplication.ViewModels;
+using FirstWebApplication.ViewModels;
 
 namespace FirstWebApplication.Models
 {
@@ -26,7 +26,28 @@ namespace FirstWebApplication.Models
             }
         }
 
-        // Other methods for removing items, calculating total price, etc.
+        public void UpdateQuantity(Product product, int quantity)
+        {
+            var existingItem = Items.FirstOrDefault(item => item.ProductId == product.product_id);
+            if (existingItem != null)
+            {
+                existingItem.Quantity = quantity;
+            }
+        }
+
+        //public void RemoveItem(Product product)
+        //{
+        //    var itemToRemove = Items.FirstOrDefault(item => item.ProductId == product.product_id);
+        //    if (itemToRemove != null)
+        //    {
+        //        Items.Remove(itemToRemove);
+        //    }
+        //}
+
+        //public void Clear()
+        //{
+        //    Items.Clear();
+        //}
     }
 
 }
