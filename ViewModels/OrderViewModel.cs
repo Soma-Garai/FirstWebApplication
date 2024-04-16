@@ -4,7 +4,8 @@
     {
         public int UserId { get; set; } // User placing the order
         public List<OrderItemViewModel> OrderItems { get; set; } // List of items in the order
-
+        public OrderDetails OrderDetails { get; set; }
+        
         public OrderViewModel()
         {
             OrderItems = new List<OrderItemViewModel>();
