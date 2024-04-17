@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Cart";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
+    
 }
 <!DOCTYPE html>
 <html>
@@ -20,11 +20,17 @@
 
     <title>ChocoLux</title>
 
+    <link rel="stylesheet" href="~/css/site.css" />
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="~/css/bootstrap.css" />
     <!-- slick slider stylesheet -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick-theme.min.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <!-- fonts style -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700&display=swap" rel="stylesheet" />
     <!-- slick slider -->
@@ -62,11 +68,78 @@ else
                 <tr>
                     <td>@item.Product.product_name</td>
                     <td>
-                            <form asp-controller="Cart" asp-action="UpdateCart" method="post">
+                            @* <form asp-controller="Cart" asp-action="UpdateCart" method="post">
                                 <input type="hidden" name="productId" value="@item.Product.product_id" />
                                 <input type="number" name="quantity" value="@item.Quantity" />
                                 <button type="submit">Update</button>
+                            </form> *@
+                            @* <form asp-controller="Cart" asp-action="UpdateCart" method="post" class="quantity-form">
+                                <input type="hidden" name="productId" value="@item.Product.product_id" />
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="submit" name="quantity" value="@Math.Max(1, item.Quantity - 1)" class="btn btn-outline-secondary">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    </div>
+                                    <input type="number" name="quantity" value="@item.Quantity" class="form-control quantity-input" />
+                                    <div class="input-group-append">
+                                        <button type="submit" name="quantity" value="@Math.Max(1, item.Quantity + 1)" class="btn btn-outline-secondary">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <button type="submit" style="display: none;">Update</button>
+                            </form> *@
+                            <form asp-controller="Cart" asp-action="UpdateCart" method="post" class="quantity-form">
+                                <input type="hidden" name="productId" value="@item.Product.product_id" />
+                                <input type="hidden" id="quantityInput" name="quantity" value="@item.Quantity" />
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-outline-secondary minus-btn" onclick="decreaseQuantity()">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    </div>
+                                    <input id="quantityInput-@item.Product.product_id" type="number" name="quantity" value="@item.Quantity" class="form-control quantity-input" readonly />
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-outline-secondary plus-btn" onclick="increaseQuantity()">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <button type="submit" style="display: none;">Update</button>
                             </form>
+
+                            <script>
+                                function increaseQuantity() {
+                                    var inputField = document.getElementById("quantityInput-@item.Product.product_id");
+                                    var newValue = parseInt(inputField.value) + 1;
+                                    inputField.value = newValue;
+                                    var quantityInput = document.getElementById("quantityInput");
+                                    var currentValue = parseInt(quantityInput.value);
+                                    var newValue = currentValue + 1;
+                                    // Update the input field with the new value
+                                    quantityInput.value = newValue;
+                                    // Trigger form submission
+                                    var form = document.querySelector('.quantity-form');
+                                    form.submit();
+                                }
+
+                                function decreaseQuantity() {
+                                    var inputField = document.getElementById("quantityInput-@item.Product.product_id");
+                                    var newValue = Math.max(1, parseInt(inputField.value) - 1);
+                                    inputField.value = newValue;
+                                    var quantityInput = document.getElementById("quantityInput");
+                                    var currentValue = parseInt(quantityInput.value);
+                                    var newValue = currentValue - 1;
+                                    // Update the input field with the new value
+                                    quantityInput.value = newValue;
+                                    // Trigger form submission
+                                    var form = document.querySelector('.quantity-form');
+                                    form.submit();
+                                }
+                            </script>
+
+
                     </td>
                     <td>@item.Product.product_price</td>
                     <td>@(item.Quantity * item.Product.product_price)</td>
@@ -80,6 +153,7 @@ else
                 </tr>
             }
         </tbody>
+        
     </table>
 
         <!-- Clear Cart Button -->
@@ -88,10 +162,14 @@ else
         </form>
 
     <!-- Checkout Button -->
-        <form method="post" action="@Url.Action("Checkout", "Orders")">
+        <div class="row justify-content-end">
+            <div class="col-auto">
+                <form method="post" action="@Url.Action("Checkout", "Orders")">
+                    <button type="submit" class="btn btn-primary btn-brown">Checkout</button>
+                </form>
+            </div>
+        </div>
 
-            <button type="submit" class="btn btn-primary btn-brown">Checkout</button>
-        </form>
 }
     <!-- jQuery -->
     <script src="~/js/jquery-3.4.1.min.js"></script>
@@ -112,6 +190,8 @@ else
                 background-color: #654321; /* Darker brown on hover */
                 border-color: #654321; /* Darker brown for border on hover */
             }
+
+
     </style>
 </body>
 </html>
