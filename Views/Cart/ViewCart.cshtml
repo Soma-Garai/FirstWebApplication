@@ -67,29 +67,7 @@ else
             {
                 <tr>
                     <td>@item.Product.product_name</td>
-                    <td>
-                            @* <form asp-controller="Cart" asp-action="UpdateCart" method="post">
-                                <input type="hidden" name="productId" value="@item.Product.product_id" />
-                                <input type="number" name="quantity" value="@item.Quantity" />
-                                <button type="submit">Update</button>
-                            </form> *@
-                            @* <form asp-controller="Cart" asp-action="UpdateCart" method="post" class="quantity-form">
-                                <input type="hidden" name="productId" value="@item.Product.product_id" />
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <button type="submit" name="quantity" value="@Math.Max(1, item.Quantity - 1)" class="btn btn-outline-secondary">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="number" name="quantity" value="@item.Quantity" class="form-control quantity-input" />
-                                    <div class="input-group-append">
-                                        <button type="submit" name="quantity" value="@Math.Max(1, item.Quantity + 1)" class="btn btn-outline-secondary">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <button type="submit" style="display: none;">Update</button>
-                            </form> *@
+                    <td>                           
                             <form asp-controller="Cart" asp-action="UpdateCart" method="post" class="quantity-form">
                                 <input type="hidden" name="productId" value="@item.Product.product_id" />
                                 <input type="hidden" id="quantityInput" name="quantity" value="@item.Quantity" />
@@ -99,7 +77,7 @@ else
                                             <i class="fas fa-minus"></i>
                                         </button>
                                     </div>
-                                    <input id="quantityInput-@item.Product.product_id" type="number" name="quantity" value="@item.Quantity" class="form-control quantity-input" readonly />
+                                    <input id="quantityInput-@item.Product.product_id" type="number" name="quantity" value="@item.Quantity" class="form-control quantity-input" readonly data-product-id="@item.Product.product_id" />
                                     <div class="input-group-append">
                                         <button type="button" class="btn btn-outline-secondary plus-btn" onclick="increaseQuantity()">
                                             <i class="fas fa-plus"></i>
@@ -107,6 +85,10 @@ else
                                     </div>
                                 </div>
                                 <button type="submit" style="display: none;">Update</button>
+                            </form>
+                            <form id="form-@item.Product.product_id" asp-controller="Cart" asp-action="RemoveFromCart" method="post">
+                                <input type="hidden" name="productId" value="@item.Product.product_id" />
+                                <!-- You can add a submit button if needed -->
                             </form>
 
                             <script>
@@ -123,19 +105,27 @@ else
                                     var form = document.querySelector('.quantity-form');
                                     form.submit();
                                 }
-
+                             
                                 function decreaseQuantity() {
                                     var inputField = document.getElementById("quantityInput-@item.Product.product_id");
-                                    var newValue = Math.max(1, parseInt(inputField.value) - 1);
-                                    inputField.value = newValue;
-                                    var quantityInput = document.getElementById("quantityInput");
-                                    var currentValue = parseInt(quantityInput.value);
-                                    var newValue = currentValue - 1;
-                                    // Update the input field with the new value
-                                    quantityInput.value = newValue;
-                                    // Trigger form submission
-                                    var form = document.querySelector('.quantity-form');
-                                    form.submit();
+                                    var newValue = Math.max(0, parseInt(inputField.value) - 1);
+                                    inputField.value = newValue;  //updated value in box
+                                    if (newValue === 0) {
+                                        // Remove the product from the cart
+                                        var productId = inputField.getAttribute("data-product-id");
+                                        var form = document.getElementById("form-@item.Product.product_id");
+                                        form.submit(); // Submit the form to remove the product
+                                    } else {
+                                        var quantityInput = document.getElementById("quantityInput");
+                                        var currentValue = parseInt(quantityInput.value);
+                                        var newValue = currentValue - 1;
+                                        // Update the input field with the new value
+                                        quantityInput.value = newValue;  //updated value in hidden field
+                                        // Trigger form submission
+                                        var form = document.querySelector('.quantity-form');
+                                        form.submit();
+                                    }
+                                    
                                 }
                             </script>
 
