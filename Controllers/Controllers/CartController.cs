@@ -10,17 +10,26 @@ namespace FirstWebApplication.Controllers
 {
     public class CartController : Controller
     {
-
+        private readonly IHttpContextAccessor _contextAccessor;
         private readonly AppDbContext _context;
 
-        public CartController(AppDbContext context)
+        public CartController(AppDbContext context, IHttpContextAccessor contextAccessor)
         {
-
+            _contextAccessor = contextAccessor;
             _context = context;
         }
 
         public IActionResult AddToCart(int productId, int quantity)
         {
+            var user = _contextAccessor.HttpContext.User;
+            // Check if the user is authenticated
+            if (!user.Identity.IsAuthenticated)
+            {
+                // Redirect the user to the login page
+                return RedirectToAction("Login", "User");
+            }
+            else
+            {
             // Find the product in the database
             var product = _context.tblProducts.Find(productId);
             if (product == null)
@@ -38,6 +47,8 @@ namespace FirstWebApplication.Controllers
             HttpContext.Session.Set("Cart", cart);
 
             return RedirectToAction("ViewCart"); // Redirect to view cart page
+
+            }
         }
 
         public IActionResult ViewCart()
@@ -46,7 +57,7 @@ namespace FirstWebApplication.Controllers
 
             return View(cart);
         }
-
+        [HttpPost]
         public IActionResult UpdateCart(int productId, int quantity)
         {
             var product = _context.tblProducts.Find(productId);
