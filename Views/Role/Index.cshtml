@@ -1,15 +1,22 @@
-﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
+@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
 
-<h2>Roles</h2>
+<h2>Role Manager</h2>
 
 <p>
-    <a asp-action="CreateRole" class="btn btn-primary">Create New</a>
+    <table class="table">
+        <tr>
+            <td>
+    <a asp-action="CreateRole" class="btn btn-primary">Add New Role</a>
+    <a asp-action="Index" asp-controller="UserRoles" class="btn btn-primary">User Roles</a>
+            </td>
+        </tr>
+    </table>
 </p>
 
 <table class="table">
     <thead>
         <tr>
-            <th>Name</th>
+            <th>Role Name</th>
             <th>Actions</th>
         </tr>
     </thead>
