@@ -19,9 +19,24 @@ namespace FirstWebApplication.Controllers
         }
 
         public IActionResult Index()
-        {           
-            return View();
-        }
+       {
+    // Retrieve products from the database along with categories 
+    var productsWithCategories = _appDbContext.tblProducts
+        .Include(p => p.category) // Include category information
+        .Select(p => new ProductWithCategoryViewModel
+        {
+            product_id = p.product_id,
+            product_name = p.product_name,
+            product_description = p.product_description,
+            product_price = p.product_price,
+            product_ImagePath = p.product_ImagePath,
+            CategoryId = p.CategoryId,
+            CategoryName = p.category.CategoryName // Assuming there's a property for CategoryName in Category entity
+        })
+        .ToList();
+    ViewBag.ProductsWithCategories = productsWithCategories;
+    return View();
+       }
         
         public IActionResult About() 
         {
