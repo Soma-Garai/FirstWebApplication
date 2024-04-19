@@ -63,6 +63,7 @@
                                     Chocolates
                                 </a *@                                  
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="@Url.Action("Chocolates", "Home")">All</a>
                                     @if (ViewBag.Categories != null)
                                     {
                                         @foreach (var category in ViewBag.Categories)
