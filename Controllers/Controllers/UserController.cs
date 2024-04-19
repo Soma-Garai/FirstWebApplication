@@ -76,10 +76,8 @@ namespace FirstWebApplication.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
-            returnUrl ??= Url.Content("~/Home/Index");
-
             if (ModelState.IsValid)
             {
                 var userName = model.Email;
@@ -94,7 +92,7 @@ namespace FirstWebApplication.Controllers
                 var result = await _signInManager.PasswordSignInAsync(userName, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    return LocalRedirect(returnUrl);
+                    return RedirectToAction("Index", "Home");
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
