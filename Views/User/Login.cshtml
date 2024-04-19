@@ -41,38 +41,39 @@
     <!-- Main content for user sign up -->
     <div class="main_body_content">
         <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header">User Login</div>
-
-                        <div class="card-body">
-                            <form method="post" action="/User/Login">
-                                <div class="form-group">
-                                    <label for="Email / Username">Email / Username</label>
-                                    <input type="text" class="form-control" id="email" name="email" required autofocus>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="password">Password</label>
-                                    <input type="password" class="form-control" id="password" name="password" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="remember" name="remember">
-                                        <label class="custom-control-label" for="remember">Remember Me</label>
-                                    </div>
-                                </div>
-
-                                <button type="submit" class="btn btn-primary btn-brown">Login</button>
-                            </form>
+            <div class="row">
+                <div class="col-md-5 col-lg-4 offset-md-1 offset-lg-2">
+                    <div class="heading_container">
+                        <h2>
+                            User Login
+                        </h2>
+                    </div>
+                    <form asp-action="Login" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Email"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
+                        <div class="form-group">
+                            <label asp-for="Password"></label>
+                            <input asp-for="Password" class="form-control" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="remember" name="remember">
+                                <label class="custom-control-label" for="remember">Remember Me</label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-brown">Login</button>
+                    </form>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    
 
 
         <!-- Scripts -->
