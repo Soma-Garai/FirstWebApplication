@@ -1,4 +1,5 @@
-﻿@{
+@model List<FirstWebApplication.Models.Products>
+@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -86,110 +87,52 @@
                         Our chocolate products
                     </h2>
                     <p>
-                        Many desktop publishing packages and web pagend web page editors now use Lorem Ipsum as their
+                        Are you ready to experience pure bliss in every bite? Look no further than our exquisite range of chocolates, crafted with passion and perfection to elevate your chocolate moments to new heights!
                     </p>
                 </div>
             </div>
             <div class="container">
                 <div class="chocolate_container">
-                    <div class="box">
-                        <div class="img-box">
-                            <img src="images/chocolate1.png" alt="">
+
+                    <!-- Loop through products and display -->
+                    @foreach (var product in ViewBag.ProductsWithCategories)
+                    {
+                        @* var photoPath = "~/images/" + (product.product_ImagePath ?? "no img.jpg"); *@
+                        <div class="box">
+                            <div class="img-box">
+                                @* <img src="@product.product_ImagePath" alt="@product.product_name"> *@
+                                @* <img src="~/images/@product.product_image" alt="product image"> *@
+                                <img src="@product.product_ImagePath" alt="product image" asp-append-version="true">
+                                @* <img src="@photoPath" alt="@product.product_name" asp-append-version="true"> *@
+                            </div>
+                            <div class="detail-box">
+                                <h6>
+                                    @product.product_name
+                                </h6>
+                                <h5>
+                                    Rs.@product.product_price
+                                </h5>
+                                @* <a href="">
+                            BUY NOW
+                            </a> *@
+                                <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                                    <input type="hidden" name="productId" value="@product.product_id" />
+                                    <input type="number" name="quantity" value="1" min="1" />
+                                    <button type="submit" class="btn btn-dark">Add to Cart</button>
+                                </form>
+                                @* <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                            <input type="hidden" name="product_id" value="@product.product_id" />
+                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                            </form> *@
+                                @* <div class="btn-group" role="group" aria-label="Product Actions">
+                                    <a href="@Url.Action("EditProduct", "Product", new { id = product.product_id })" class="btn btn-sm btn-primary">Edit</a>
+                                    <a href="@Url.Action("DeleteProduct", "Product", new { id = product.product_id })" class="btn btn-sm btn-danger">Delete</a>
+                                </div> *@
+                            </div>
                         </div>
-                        <div class="detail-box">
-                            <h6>
-                                Yummy <span>chocolate</span>
-                            </h6>
-                            <h5>
-                                $5.0
-                            </h5>
-                            <a href="">
-                                BUY NOW
-                            </a>
-                        </div>
-                    </div>
-                    <div class="box">
-                        <div class="img-box">
-                            <img src="images/chocolate2.png" alt="">
-                        </div>
-                        <div class="detail-box">
-                            <h6>
-                                Yummy <span>chocolate</span>
-                            </h6>
-                            <h5>
-                                $5.0
-                            </h5>
-                            <a href="">
-                                BUY NOW
-                            </a>
-                        </div>
-                    </div>
-                    <div class="box">
-                        <div class="img-box">
-                            <img src="images/chocolate3.png" alt="">
-                        </div>
-                        <div class="detail-box">
-                            <h6>
-                                Yummy <span>chocolate</span>
-                            </h6>
-                            <h5>
-                                $5.0
-                            </h5>
-                            <a href="">
-                                BUY NOW
-                            </a>
-                        </div>
-                    </div>
-                    <div class="box">
-                        <div class="img-box">
-                            <img src="images/chocolate1.png" alt="">
-                        </div>
-                        <div class="detail-box">
-                            <h6>
-                                Yummy <span>chocolate</span>
-                            </h6>
-                            <h5>
-                                $5.0
-                            </h5>
-                            <a href="">
-                                BUY NOW
-                            </a>
-                        </div>
-                    </div>
-                    <div class="box">
-                        <div class="img-box">
-                            <img src="images/chocolate2.png" alt="">
-                        </div>
-                        <div class="detail-box">
-                            <h6>
-                                Yummy <span>chocolate</span>
-                            </h6>
-                            <h5>
-                                $5.0
-                            </h5>
-                            <a href="">
-                                BUY NOW
-                            </a>
-                        </div>
-                    </div>
-                    <div class="box">
-                        <div class="img-box">
-                            <img src="images/chocolate3.png" alt="">
-                        </div>
-                        <div class="detail-box">
-                            <h6>
-                                Yummy <span>chocolate</span>
-                            </h6>
-                            <h5>
-                                $5.0
-                            </h5>
-                            <a href="">
-                                BUY NOW
-                            </a>
-                        </div>
-                    </div>
+                    }
                 </div>
-            </div>
+            </div>          
         </section>
 
         <!-- end chocolate section -->
@@ -477,18 +420,7 @@
 
     </div>
 
-    <!-- footer section -->
-    <footer class="container-fluid footer_section">
-        <div class="container">
-            <div class="col-md-11 col-lg-8 mx-auto">
-                <p>
-                    &copy; <span id="displayYear"></span> All Rights Reserved By
-                    <a href="https://html.design/">Free Html Templates</a>
-                </p>
-            </div>
-        </div>
-    </footer>
-    <!-- footer section -->
+    
     <!-- jQery -->
     <script src="js/jquery-3.4.1.min.js"></script>
     <!-- bootstrap js -->
