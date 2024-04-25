@@ -1,4 +1,4 @@
-﻿using FirstWebApplication.Models;
+using FirstWebApplication.Models;
 using FirstWebApplication.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FirstWebApplication.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UserRolesController : Controller
     {
         private readonly UserManager<UserModel> _userManager;
@@ -25,13 +26,18 @@ namespace FirstWebApplication.Controllers
             var userRolesViewModel = new List<UserRolesViewModel>();
             foreach (UserModel user in users)
             {
-                var thisViewModel = new UserRolesViewModel();
-                thisViewModel.UserId = user.Id;
-                thisViewModel.Email = user.Email;
-                thisViewModel.FirstName = user.FirstName;
-                thisViewModel.LastName = user.LastName;
-                thisViewModel.Roles = await GetUserRoles(user); //gets list of role names associated with the user
-                userRolesViewModel.Add(thisViewModel);
+                // Check if the user has the "Admin" role
+                var isAdmin = await _userManager.IsInRoleAsync(user, "Admin"); 
+                if (!isAdmin)
+                {
+                    var thisViewModel = new UserRolesViewModel();
+                    thisViewModel.UserId = user.Id;
+                    thisViewModel.Email = user.Email;
+                    thisViewModel.FirstName = user.FirstName;
+                    thisViewModel.LastName = user.LastName;
+                    thisViewModel.Roles = await GetUserRoles(user); //gets list of role names associated with the user
+                    userRolesViewModel.Add(thisViewModel);
+                }
             }
             return View(userRolesViewModel);
         }
@@ -39,10 +45,12 @@ namespace FirstWebApplication.Controllers
         private async Task<List<string>> GetUserRoles(UserModel user)
         {
             return new List<string>(await _userManager.GetRolesAsync(user));
+            //var roles = await _userManager.GetRolesAsync(user);
+            //return roles.Where(role => role != "Admin").ToList();
         }
 
         //to modify/manage roles of each user
-        //[Authorize(Roles = "SuperAdmin")]
+        
         [HttpGet]
         public async Task<IActionResult> Manage(string userId)
         {
