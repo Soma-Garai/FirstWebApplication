@@ -1,4 +1,7 @@
 @model List<FirstWebApplication.Models.Products>
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using FirstWebApplication.Constants
 @{
     ViewData["Title"] = "Chocolates";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -47,7 +50,10 @@
         <div class="container">
             <div class="row justify-content-end mt-3">
                 <div class="col-auto">
-                    <a href="@Url.Action("AddProduct", "Product")" class="btn btn-primary btn-brown">Add Product</a>
+                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Products.Create)).Result.Succeeded)
+                    {
+                        <a href="@Url.Action("AddProduct", "Product")" class="btn btn-primary btn-brown">Add Product</a>
+                    }
                 </div>
             </div>
         </div>
@@ -101,22 +107,31 @@
                                 <h5>
                                     Rs.@product.product_price
                                 </h5>
-                                @* <a href="">
-                                    BUY NOW
-                                </a> *@
+                                
                                 <form asp-controller="Cart" asp-action="AddToCart" method="post">
                                     <input type="hidden" name="productId" value="@product.product_id" />
                                     <input type="number" name="quantity" value="1" min="1" />
-                                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                                    <button type="submit" class="btn btn-dark">Add to Cart</button>
                                 </form>
-                                @* <form asp-controller="Cart" asp-action="AddToCart" method="post">
-                                    <input type="hidden" name="product_id" value="@product.product_id" />
-                                    <button type="submit" class="btn btn-primary">Add to Cart</button>
-                                </form> *@
+                                
+                                @* Authorization Check: Within the <div>,there's an @if statement that checks if 
+                                   the current user is authorized to perform the action of creating a product
+                                   This is done using AuthorizationService.AuthorizeAsync(User, Permissions.Products.Create), 
+                                   which asynchronously checks if the user has the necessary permission to create products. 
+                                   Result.Succeeded is then used to synchronously get the result of the asynchronous operation
+                                   and check if authorization was successful.*@
+                                    
                                 <div class="btn-group" role="group" aria-label="Product Actions">
-                                    <a href="@Url.Action("EditProduct", "Product", new { id = product.product_id })" class="btn btn-sm btn-primary">Edit</a>
-                                    <a href="@Url.Action("DeleteProduct", "Product", new { id = product.product_id })" class="btn btn-sm btn-danger">Delete</a>
+                                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Products.Edit)).Result.Succeeded)
+                                    {
+                                        <a href="@Url.Action("EditProduct", "Product", new { id = product.product_id })" class="btn btn-sm btn-secondary">Edit</a>
+                                    }
+                                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Products.Delete)).Result.Succeeded)
+                                    {
+                                        <a href="@Url.Action("DeleteProduct", "Product", new { id = product.product_id })" class="btn btn-sm btn-danger">Delete</a>
+                                    }
                                 </div>
+                                
                             </div>
                         </div>
                     }
@@ -262,7 +277,9 @@
                 background-color: #654321; /* Darker brown on hover */
                 border-color: #654321; /* Darker brown for border on hover */
             }
+
     </style>
+
 </body>
 
 </html>
