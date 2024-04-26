@@ -25,16 +25,17 @@ namespace FirstWebApplication.Controllers
             // Permissions for the "Products" module are retrieved using the GeneratePermissionsForModule method from
             // the Permissions class. Each permission is converted into a RoleClaimsViewModel object and
             // added to the allPermissions list.
-            var productsPermissions = Permissions.GeneratePermissionsForModule("Products")
-                                           .Select(permission => new RoleClaimsViewModel { Value = permission })
-                                           .ToList();
+            var productsPermissions = Permissions<Products>.GeneratePermissionsForModule("Products")
+                               .Select(permission => new RoleClaimsViewModel { Value = permission })
+                               .ToList();
             allPermissions.AddRange(productsPermissions);
 
             // Retrieve permissions for the "Order" module
-            //var orderPermissions = Permissions.GeneratePermissionsForModule("Order")
-            //                                   .Select(permission => new RoleClaimsViewModel { Value = permission })
-            //                                   .ToList();
-            //allPermissions.AddRange(orderPermissions);
+
+          // var orderPermissions = Permissions<Orders>.GeneratePermissionsForModule("Orders")
+           //                        .Select(permission => new RoleClaimsViewModel { Value = permission })
+           //                        .ToList();
+          // allPermissions.AddRange(orderPermissions);
 
             // Retrieve the role based on the provided role ID
             var role = await _roleManager.FindByIdAsync(Id);
