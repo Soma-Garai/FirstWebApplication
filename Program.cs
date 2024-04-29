@@ -4,9 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using FirstWebApplication.Models;
 using Microsoft.Extensions.DependencyInjection;
 using FirstWebApplication.Extensions;
+using FirstWebApplication.Permission;
+using Microsoft.AspNetCore.Authorization;
+
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("FirstWebApplicationDbContextConnection") ?? throw new InvalidOperationException("Connection string 'FirstWebApplicationDbContextConnection' not found.");
-
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddIdentity<UserModel, IdentityRole>()
@@ -14,10 +18,31 @@ builder.Services.AddIdentity<UserModel, IdentityRole>()
             .AddDefaultUI()
             .AddDefaultTokenProviders();
 
-builder.Services.AddScoped<UserManager<UserModel>>();
-builder.Services.AddScoped<SignInManager<UserModel>>();
-builder.Services.AddScoped<Products>();
-builder.Services.AddScoped<Category>();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy =>
+        policy.RequireRole("Admin"));
+    options.AddPolicy("UserPolicy", policy =>
+        policy.RequireRole("User"));
+
+    options.AddPolicy("ProductCreatePolicy", policy =>
+        policy.RequireClaim("Permission", "Products.Create"));
+    options.AddPolicy("ProductEditPolicy", policy =>
+        policy.RequireClaim("Permission", "Products.Edit"));
+    options.AddPolicy("ProductDeletePolicy", policy =>
+        policy.RequireClaim("Permission", "Products.Delete"));
+
+    options.AddPolicy("CheckoutPolicy", policy =>
+        policy.RequireRole("User")
+              .RequireClaim("Permission", "Orders.Create"));
+    // Define more policies as needed
+});
+var userManager=builder.Services.AddScoped<UserManager<UserModel>>();
+var roleManager =builder.Services.AddScoped<SignInManager<UserModel>>();
+
+
+//builder.Services.AddScoped<Products>();
+//builder.Services.AddScoped<Category>();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
