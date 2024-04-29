@@ -1,0 +1,131 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model FirstWebApplication.ViewModels.PermissionViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    // Retrieve the role name using the roleId
+    var roleName = await Model.RoleManager.FindByIdAsync(Model.RoleId);
+    var roleNameValue = roleName?.Name; // Check for null before accessing the Name property
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>ChocoLux</title>
+
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+    <!--slick slider stylesheet -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick-theme.min.css" />
+
+    <!-- fonts style -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700&display=swap" rel="stylesheet" />
+    <!-- slick slider -->
+
+    <link rel="stylesheet" href="css/slick-theme.css" />
+    <!-- font awesome style -->
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="css/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="css/responsive.css" rel="stylesheet" />
+
+</head>
+
+<body>
+
+    <h2>Manage Permissions for @roleNameValue </h2>
+<br />
+<div class="card">
+    <div id="viewAll" class="card-body table-responsive">
+        <form asp-controller="Permission" method="post" asp-action="Update" class="d-inline">
+            <input asp-for="@Model.RoleId" type="hidden" />
+            <table class="table table-striped" id="permissionTable">
+                <thead>
+                    <tr>
+                        @* <th>
+                            Type
+                        </th> *@
+                        <th>
+                                <h2>Permission</h2>
+                        </th>
+                        <th>
+                                <h2>Status</h2>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    @for (int i = 0; i < Model.RoleClaims.Count(); i++)
+                    {
+                        <tr>
+                            @* <td>
+                                <input asp-for="@Model.RoleClaims[i].Type" type="hidden" />
+                                @Model.RoleClaims[i].Type
+                            </td> *@
+                            <td>
+                                <input asp-for="@Model.RoleClaims[i].Value" type="hidden" />
+                                @Model.RoleClaims[i].Value
+                            </td>
+                            <td>
+                                <div class="form-check m-1">
+                                    <input asp-for="@Model.RoleClaims[i].Selected" class="form-check-input" />
+                                </div>
+                            </td>
+                        </tr>
+                            // Add a condition to insert empty rows after every fourth row
+                            @if ((i + 1) % 4 == 0)
+                            {
+                                <tr style="height: 20px;"></tr> <!-- Empty row -->
+                                <tr style="height: 20px;"></tr> <!-- Empty row -->
+                            }
+                    }
+                </tbody>
+            </table>
+            <div class="col-sm-12" style="padding: 20px 20px 0px 0px">
+                <button type="submit" id="save" class="btn btn-success">
+                    <i class="fa fa-check"></i>
+                    Save
+                </button>
+                <a asp-action="Index" asp-controller="Role"
+                   class="btn btn-primary" style="width:auto">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+    <!-- jQuery -->
+    <script src="~/js/jquery-3.4.1.min.js"></script>
+    <!-- bootstrap js -->
+    <script src="~/js/bootstrap.js"></script>
+    <!-- slick slider -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick.min.js"></script>
+    <!-- custom js -->
+    <script src="~/js/custom.js"></script>
+    <!-- Custom Styles -->
+    <style>
+        .btn-brown {
+            background-color: #8B4513; /* Brown color */
+            border-color: #8B4513; /* Brown color for border */
+        }
+
+            .btn-brown:hover {
+                background-color: #654321; /* Darker brown on hover */
+                border-color: #654321; /* Darker brown for border on hover */
+            }
+
+    </style>
+</body>
+</html>
