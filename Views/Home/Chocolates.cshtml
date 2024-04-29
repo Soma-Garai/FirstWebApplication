@@ -50,7 +50,7 @@
         <div class="container">
             <div class="row justify-content-end mt-3">
                 <div class="col-auto">
-                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions<Products>.Module.Create)).Result.Succeeded)
+                    @if ((AuthorizationService.AuthorizeAsync(User, "ProductCreatePolicy")).Result.Succeeded)
                     {
                         <a href="@Url.Action("AddProduct", "Product")" class="btn btn-primary btn-brown">Add Product</a>
                     }
@@ -122,11 +122,11 @@
                                    and check if authorization was successful.*@
                                     
                                 <div class="btn-group" role="group" aria-label="Product Actions">
-                                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions<Products>.Module.Edit)).Result.Succeeded)
+                                    @if ((AuthorizationService.AuthorizeAsync(User, "ProductEditPolicy")).Result.Succeeded)
                                     {
                                         <a href="@Url.Action("EditProduct", "Product", new { id = product.product_id })" class="btn btn-sm btn-secondary">Edit</a>
                                     }
-                                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions<Products>.Module.Delete)).Result.Succeeded)
+                                    @if ((AuthorizationService.AuthorizeAsync(User, "ProductDeletePolicy")).Result.Succeeded)
                                     {
                                         <a href="@Url.Action("DeleteProduct", "Product", new { id = product.product_id })" class="btn btn-sm btn-danger">Delete</a>
                                     }
