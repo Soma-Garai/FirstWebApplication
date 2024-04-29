@@ -15,6 +15,7 @@ namespace FirstWebApplication.Controllers
         {
             _roleManager = roleManager;
         }
+        //This method is rendering the data for manage permission view.
         public async Task<ActionResult> Index(string Id)
         {
             //A new instance of PermissionViewModel is created to hold data for the view.
@@ -26,16 +27,16 @@ namespace FirstWebApplication.Controllers
             // the Permissions class. Each permission is converted into a RoleClaimsViewModel object and
             // added to the allPermissions list.
             var productsPermissions = Permissions<Products>.GeneratePermissionsForModule("Products")
-                               .Select(permission => new RoleClaimsViewModel { Value = permission })
-                               .ToList();
+                                           .Select(permission => new RoleClaimsViewModel { Value = permission })
+                                           .ToList();
             allPermissions.AddRange(productsPermissions);
 
             // Retrieve permissions for the "Order" module
 
-          // var orderPermissions = Permissions<Orders>.GeneratePermissionsForModule("Orders")
-           //                        .Select(permission => new RoleClaimsViewModel { Value = permission })
-           //                        .ToList();
-          // allPermissions.AddRange(orderPermissions);
+            var orderPermissions = Permissions<Orders>.GeneratePermissionsForModule("Orders")
+                                               .Select(permission => new RoleClaimsViewModel {  Value = permission })
+                                               .ToList();
+            allPermissions.AddRange(orderPermissions);
 
             // Retrieve the role based on the provided role ID
             var role = await _roleManager.FindByIdAsync(Id);
@@ -47,6 +48,7 @@ namespace FirstWebApplication.Controllers
             }
             //The RoleId property of the model is set
             model.RoleId = Id;
+            
 
             // Claims associated with the retrieved role are retrieved 
             var claims = await _roleManager.GetClaimsAsync(role);
@@ -71,6 +73,7 @@ namespace FirstWebApplication.Controllers
             //Finally, the RoleClaims property of the model is set to the list of all permissions,
             //including their selection status.
             model.RoleClaims = allPermissions;
+            model.RoleManager = _roleManager;   //passing roleManager to view to see the roleName
             return View(model);
         }
 
@@ -88,7 +91,7 @@ namespace FirstWebApplication.Controllers
             var selectedClaims = model.RoleClaims.Where(a => a.Selected).ToList();
             foreach (var claim in selectedClaims)
             {
-                await _roleManager.AddPermissionClaim(role, claim.Value);
+                await _roleManager.AddPermissionClaim(role, claim.Value); //AddPermissionClaim method is defined in ClaimsHelper
             }
             //return RedirectToAction("Index", new { roleId = model.RoleId });
             return RedirectToAction("Index", "Role");
