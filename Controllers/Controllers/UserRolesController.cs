@@ -26,7 +26,7 @@ namespace FirstWebApplication.Controllers
             var userRolesViewModel = new List<UserRolesViewModel>();
             foreach (UserModel user in users)
             {
-                // Check if the user has the "Admin" role
+                // Check if the user has the "Admin" role becoz don't want to show the admin
                 var isAdmin = await _userManager.IsInRoleAsync(user, "Admin"); 
                 if (!isAdmin)
                 {
