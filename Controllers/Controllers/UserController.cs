@@ -112,7 +112,7 @@ namespace FirstWebApplication.Controllers
             string userId = User.Identity.Name;
 
             // Clear the cart data associated with the user's identifier from session
-            _contextAccessor.HttpContext.Session.Remove(userId);
+            HttpContext.Session.Remove(userId);
 
             // Perform logout operation
             await _signInManager.SignOutAsync();
