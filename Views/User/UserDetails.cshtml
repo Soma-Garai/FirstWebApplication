@@ -1,0 +1,93 @@
+﻿@model FirstWebApplication.Models.UserModel
+@{
+    ViewData["Title"] = "UserDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>ChocoLux</title>
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="~/css/bootstrap.css" />
+    <!-- slick slider stylesheet -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick-theme.min.css" />
+    <!-- fonts style -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700&display=swap" rel="stylesheet" />
+    <!-- slick slider -->
+    <link rel="stylesheet" href="~/css/slick-theme.css" />
+    <!-- font awesome style -->
+    <link href="~/css/font-awesome.min.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="~/css/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="~/css/responsive.css" rel="stylesheet" />
+</head>
+
+<body class="sub_page">
+    <h2>Manage Account</h2>
+    <!-- Main content for user sign up -->
+    <div class="main_body_content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5 col-lg-4 offset-md-1 offset-lg-2">
+                    <div class="heading_container">
+                        <h2>User Details</h2>
+                    </div>
+                    <div class="container">
+                        <dl>
+                            <dt>First Name:</dt>
+                            <dd>@Model.FirstName</dd>
+
+                            <dt>Last Name:</dt>
+                            <dd>@Model.LastName</dd>
+
+                            <dt>User Name:</dt>
+                            <dd>@Model.UserName</dd>
+
+                            <dt>Email:</dt>
+                            <dd>@Model.Email</dd>
+
+                            <!-- Add more properties as needed -->
+                        </dl>
+                        <a href="@Url.Action("EditUser", "User", new { email = Model.Email })" class="btn btn-primary">Update User Details</a>                                                  
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Scripts -->
+    <script src="~/js/jquery-3.4.1.min.js"></script>
+    <script src="~/js/bootstrap.js"></script>
+    <!-- slick slider -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick.min.js"></script>
+    <!-- custom js -->
+    <script src="~/js/custom.js"></script>
+    <!-- Any additional scripts -->
+    <style>
+        .btn-brown {
+            background-color: #8B4513; /* Brown color */
+            border-color: #8B4513; /* Brown color for border */
+        }
+
+            .btn-brown:hover {
+                background-color: #654321; /* Darker brown on hover */
+                border-color: #654321; /* Darker brown for border on hover */
+            }
+    </style>
+</body>
+</html>
