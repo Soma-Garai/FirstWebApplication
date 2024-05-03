@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using FirstWebApplication.ViewModels;
 using System.Net.Mail;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace FirstWebApplication.Controllers
 {
@@ -59,7 +60,7 @@ namespace FirstWebApplication.Controllers
             }
 
             return View(model);
-        }
+        }//i want edit and update user action methods
 
         [HttpGet]
         public IActionResult Login()
@@ -128,5 +129,91 @@ namespace FirstWebApplication.Controllers
 
             return View();
         }
+        [HttpGet]
+        public async Task<IActionResult> UserDetails()
+        {
+            // Get the current user's ID
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId == null)
+            {
+                // Handle case where user ID is not found
+                return NotFound();
+            }
+
+            // Retrieve user details based on the user ID
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                // Handle case where user details are not found
+                return NotFound();
+            }
+
+            // You can create a view model or directly pass the user to the view
+            return View(user);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditUser(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user != null)
+            {
+                var model = new UserModel
+                {
+                    
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    UserName = user.UserName,
+                    Email = user.Email
+
+                };
+
+                return View(model);
+            }
+
+            return RedirectToAction("Index", "Home"); // or display an error view
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateUser(UserModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Get the current user's ID
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                //var id = model.Id;
+                //var user = await _userManager.FindByEmailAsync(model.Email);
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user != null)
+                {
+                    user.FirstName = model.FirstName;
+                    user.LastName = model.LastName;
+                    user.UserName = model.UserName;
+                    user.Email = model.Email;
+
+                    var result = await _userManager.UpdateAsync(user);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("UserDetails", "User");
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "User not found.");
+                }
+            }
+
+            return NotFound();
+        }
+
+        
+
     }
 }
