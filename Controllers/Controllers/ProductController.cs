@@ -1,5 +1,6 @@
 using FirstWebApplication.Models;
 using FirstWebApplication.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
@@ -16,8 +17,9 @@ namespace FirstWebApplication.Controllers
             _context = context;     
             _hostEnvironment = hostEnvironment; 
         }
-
+        
         [HttpGet]
+        [Authorize(Policy = "ProductCreatePolicy")]
         public IActionResult AddProduct()
         {
             ViewBag.Categories = _context.tblCategories.ToList(); // Retrieve all categories for dropdown
@@ -68,6 +70,7 @@ namespace FirstWebApplication.Controllers
 
 
         [HttpGet]
+        [Authorize(Policy = "ProductEditPolicy")]
         public IActionResult EditProduct(int id)
         {
             var product = _context.tblProducts.Find(id);
@@ -108,6 +111,7 @@ namespace FirstWebApplication.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "ProductDeletePolicy")]
         public IActionResult DeleteProduct(int id)
         {
             var product = _context.tblProducts.Find(id);
